@@ -1,0 +1,74 @@
+@use 'styles/variables' as v;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: v.$font-family;
+  font-size: 14px;
+  color: v.$text-dark;
+  background: v.$bg-light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: v.$accent-blue;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Angular Material overrides
+.mat-mdc-card {
+  border-radius: v.$border-radius !important;
+  box-shadow: v.$card-shadow !important;
+}
+
+.mat-mdc-table {
+  font-family: v.$font-family !important;
+}
+
+.mat-mdc-form-field {
+  font-family: v.$font-family !important;
+}
+
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-flat-button {
+  font-family: v.$font-family !important;
+  text-transform: none !important;
+}
+
+// Snackbar styles
+.snackbar-success {
+  --mdc-snackbar-container-color: #{v.$accent-green};
+  --mdc-snackbar-supporting-text-color: #fff;
+}
+
+.snackbar-error {
+  --mdc-snackbar-container-color: #{v.$alert-red};
+  --mdc-snackbar-supporting-text-color: #fff;
+}
+
+// Scrollbar styling
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+
+  &:hover {
+    background: #a1a1a1;
+  }
+}
