@@ -66,7 +66,7 @@ public class FlightOrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("LandingSite", request.endLandingSiteId()));
 
         if (!"active".equals(helicopter.getStatus())) {
-            throw new BusinessRuleException("Only active helicopters can be assigned to flight orders");
+            throw new BusinessRuleException("Tylko aktywne śmigłowce mogą być przypisane do zleceń lotu");
         }
 
         // Resolve crew members
@@ -84,12 +84,12 @@ public class FlightOrderService {
         // Resolve operations (must have status 3 = Potwierdzone do planu)
         Set<PlannedOperation> operations = new HashSet<>(operationRepository.findByIdIn(request.operationIds()));
         if (operations.size() != request.operationIds().size()) {
-            throw new ResourceNotFoundException("One or more planned operations not found");
+            throw new ResourceNotFoundException("Nie znaleziono jednej lub więcej operacji planowanych");
         }
         for (PlannedOperation op : operations) {
             if (op.getStatus().getId() != 3L) {
                 throw new BusinessRuleException(
-                        "Operation " + op.getOperationNumber() + " is not in status 'Potwierdzone do planu' (3)");
+                        "Operacja " + op.getOperationNumber() + " nie ma statusu 'Potwierdzone do planu' (3)");
             }
         }
 
@@ -174,7 +174,7 @@ public class FlightOrderService {
         // Transitions to 5/6 require actual times
         if ((toStatusId == 5L || toStatusId == 6L)
                 && (order.getActualStartAt() == null || order.getActualLandingAt() == null)) {
-            throw new BusinessRuleException("Actual start and landing times are required for realization");
+            throw new BusinessRuleException("Rzeczywiste czasy startu i lądowania są wymagane do realizacji");
         }
 
         DictFlightOrderStatus newStatus = statusRepository.findById(toStatusId)

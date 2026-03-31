@@ -27,8 +27,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         Map<String, Object> body = Map.of(
                 "status", 401,
-                "error", "Unauthorized",
-                "message", "Authentication required",
+                "error", "Brak autoryzacji",
+                "message", "Wymagane uwierzytelnienie",
                 "timestamp", OffsetDateTime.now().toString()
         );
 

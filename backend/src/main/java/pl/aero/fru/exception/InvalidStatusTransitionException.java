@@ -3,7 +3,7 @@ package pl.aero.fru.exception;
 public class InvalidStatusTransitionException extends RuntimeException {
 
     public InvalidStatusTransitionException(Long fromStatusId, Long toStatusId) {
-        super("Invalid status transition from " + fromStatusId + " to " + toStatusId);
+        super("Niedozwolona zmiana statusu z " + fromStatusId + " na " + toStatusId);
     }
 
     public InvalidStatusTransitionException(String message) {

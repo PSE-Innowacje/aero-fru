@@ -36,7 +36,7 @@ public class CrewMemberService {
     @Transactional
     public CrewMemberResponse create(CrewMemberRequest request) {
         if (crewMemberRepository.existsByEmail(request.email())) {
-            throw new BusinessRuleException("Crew member with email " + request.email() + " already exists");
+            throw new BusinessRuleException("Członek załogi z adresem email " + request.email() + " już istnieje");
         }
 
         DictCrewRole role = crewRoleRepository.findById(request.roleId())
@@ -53,7 +53,7 @@ public class CrewMemberService {
         CrewMember member = getCrewMember(id);
 
         if (!member.getEmail().equals(request.email()) && crewMemberRepository.existsByEmail(request.email())) {
-            throw new BusinessRuleException("Crew member with email " + request.email() + " already exists");
+            throw new BusinessRuleException("Członek załogi z adresem email " + request.email() + " już istnieje");
         }
 
         DictCrewRole role = crewRoleRepository.findById(request.roleId())

@@ -10,7 +10,7 @@ public class FlightValidationException extends RuntimeException {
     private final List<String> violations;
 
     public FlightValidationException(List<String> violations) {
-        super("Flight order validation failed: " + String.join("; ", violations));
+        super("Walidacja zlecenia lotu nie powiodła się: " + String.join("; ", violations));
         this.violations = violations;
     }
 }

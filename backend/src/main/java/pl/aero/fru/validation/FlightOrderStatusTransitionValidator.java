@@ -36,8 +36,8 @@ public class FlightOrderStatusTransitionValidator {
 
         if (!allowedRoles.contains(userRole)) {
             throw new InvalidStatusTransitionException(
-                    "Role " + userRole + " is not allowed to change flight order status from "
-                            + fromStatusId + " to " + toStatusId);
+                    "Rola " + userRole + " nie ma uprawnień do zmiany statusu zlecenia lotu z "
+                            + fromStatusId + " na " + toStatusId);
         }
     }
 }

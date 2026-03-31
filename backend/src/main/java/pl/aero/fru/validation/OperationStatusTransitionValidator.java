@@ -41,7 +41,7 @@ public class OperationStatusTransitionValidator {
 
         if (!allowedRoles.contains(userRole) && !allowedRoles.contains(SYSTEM)) {
             throw new InvalidStatusTransitionException(
-                    "Role " + userRole + " is not allowed to change status from " + fromStatusId + " to " + toStatusId);
+                    "Rola " + userRole + " nie ma uprawnień do zmiany statusu z " + fromStatusId + " na " + toStatusId);
         }
     }
 

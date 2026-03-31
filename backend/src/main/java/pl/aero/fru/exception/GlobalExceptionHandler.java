@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleFlightValidation(FlightValidationException ex) {
         ErrorResponse response = ErrorResponse.builder()
                 .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
-                .error("Flight Validation Failed")
+                .error("Błąd walidacji zlecenia lotu")
                 .message(ex.getMessage())
                 .violations(ex.getViolations())
                 .timestamp(OffsetDateTime.now())
@@ -53,8 +53,8 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
-                .error("Validation Failed")
-                .message("Request validation failed")
+                .error("Błąd walidacji")
+                .message("Walidacja żądania nie powiodła się")
                 .fieldErrors(fieldErrors)
                 .timestamp(OffsetDateTime.now())
                 .build();
@@ -63,22 +63,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
-        return buildResponse(HttpStatus.FORBIDDEN, "Access denied");
+        return buildResponse(HttpStatus.FORBIDDEN, "Brak dostępu");
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex) {
-        return buildResponse(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        return buildResponse(HttpStatus.UNAUTHORIZED, "Nieprawidłowy email lub hasło");
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ErrorResponse> handleMaxUploadSize(MaxUploadSizeExceededException ex) {
-        return buildResponse(HttpStatus.PAYLOAD_TOO_LARGE, "File size exceeds maximum allowed size");
+        return buildResponse(HttpStatus.PAYLOAD_TOO_LARGE, "Rozmiar pliku przekracza dozwolony limit");
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Wystąpił nieoczekiwany błąd");
     }
 
     private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message) {

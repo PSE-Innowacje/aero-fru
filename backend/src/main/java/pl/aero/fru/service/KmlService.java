@@ -20,10 +20,10 @@ public class KmlService {
     public int calculateRouteKm(byte[] kmlData) {
         List<double[]> coordinates = parseCoordinates(kmlData);
         if (coordinates.isEmpty()) {
-            throw new BusinessRuleException("KML file contains no coordinates");
+            throw new BusinessRuleException("Plik KML nie zawiera współrzędnych");
         }
         if (coordinates.size() > MAX_POINTS) {
-            throw new BusinessRuleException("KML file exceeds maximum of " + MAX_POINTS + " points");
+            throw new BusinessRuleException("Plik KML przekracza maksymalną liczbę " + MAX_POINTS + " punktów");
         }
 
         double totalDistance = 0.0;
@@ -66,7 +66,7 @@ public class KmlService {
         } catch (BusinessRuleException e) {
             throw e;
         } catch (Exception e) {
-            throw new BusinessRuleException("Invalid KML file: " + e.getMessage());
+            throw new BusinessRuleException("Nieprawidłowy plik KML: " + e.getMessage());
         }
     }
 

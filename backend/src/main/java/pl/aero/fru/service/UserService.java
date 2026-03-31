@@ -36,7 +36,7 @@ public class UserService {
     @Transactional
     public UserResponse create(UserRequest request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new BusinessRuleException("User with email " + request.email() + " already exists");
+            throw new BusinessRuleException("Użytkownik z adresem email " + request.email() + " już istnieje");
         }
 
         DictUserRole role = roleRepository.findById(request.roleId())
@@ -57,7 +57,7 @@ public class UserService {
         User user = getUser(id);
 
         if (!user.getEmail().equals(request.email()) && userRepository.existsByEmail(request.email())) {
-            throw new BusinessRuleException("User with email " + request.email() + " already exists");
+            throw new BusinessRuleException("Użytkownik z adresem email " + request.email() + " już istnieje");
         }
 
         DictUserRole role = roleRepository.findById(request.roleId())

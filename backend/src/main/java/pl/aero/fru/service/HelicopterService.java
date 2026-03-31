@@ -52,7 +52,7 @@ public class HelicopterService {
 
     private void validateInspection(HelicopterRequest request) {
         if ("active".equals(request.status()) && request.inspectionValidUntil() == null) {
-            throw new BusinessRuleException("Inspection validity date is required for active helicopters");
+            throw new BusinessRuleException("Data ważności przeglądu jest wymagana dla aktywnych śmigłowców");
         }
     }
 }

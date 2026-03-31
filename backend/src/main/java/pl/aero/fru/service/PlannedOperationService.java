@@ -104,7 +104,7 @@ public class PlannedOperationService {
         Long currentStatusId = op.getStatus().getId();
 
         if (isPlanner && !Set.of(1L, 2L, 3L, 4L, 5L).contains(currentStatusId)) {
-            throw new BusinessRuleException("Planning person cannot edit operations in status " + currentStatusId);
+            throw new BusinessRuleException("Osoba planująca nie może edytować operacji w statusie " + currentStatusId);
         }
 
         // Set Oracle context for change history trigger
@@ -161,7 +161,7 @@ public class PlannedOperationService {
         // Validate: transition 1->3 requires planned dates
         if (fromStatusId == 1L && toStatusId == 3L) {
             if (op.getPlannedDateEarliest() == null || op.getPlannedDateLatest() == null) {
-                throw new BusinessRuleException("Planned dates are required to confirm operation to plan");
+                throw new BusinessRuleException("Daty planowane są wymagane do potwierdzenia operacji do planu");
             }
         }
 
@@ -225,14 +225,14 @@ public class PlannedOperationService {
         try {
             return file.getBytes();
         } catch (IOException e) {
-            throw new BusinessRuleException("Failed to read KML file");
+            throw new BusinessRuleException("Nie udało się odczytać pliku KML");
         }
     }
 
     private Set<DictActivityType> resolveActivityTypes(Set<Long> ids) {
         Set<DictActivityType> types = new HashSet<>(activityTypeRepository.findAllById(ids));
         if (types.size() != ids.size()) {
-            throw new ResourceNotFoundException("One or more activity types not found");
+            throw new ResourceNotFoundException("Nie znaleziono jednego lub więcej typów czynności");
         }
         return types;
     }
