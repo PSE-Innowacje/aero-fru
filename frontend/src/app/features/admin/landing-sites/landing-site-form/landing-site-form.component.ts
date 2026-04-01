@@ -18,62 +18,8 @@ import { ROLES } from '../../../../core/constants';
   selector: 'app-landing-site-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MapViewerComponent],
-  template: `
-    <div class="page-header">
-      <h2>{{ isEditMode() ? 'Edycja lądowiska' : 'Nowe lądowisko' }}</h2>
-    </div>
-
-    <mat-card>
-      @if (loading()) {
-        <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
-      } @else {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div class="form-grid">
-            <mat-form-field appearance="outline" class="full-span">
-              <mat-label>Nazwa</mat-label>
-              <input matInput formControlName="name">
-              <mat-error>Nazwa jest wymagana</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Szerokość geograficzna</mat-label>
-              <input matInput type="number" formControlName="latitude" step="0.000001">
-              <mat-error>Wartość -90 do 90</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Długość geograficzna</mat-label>
-              <input matInput type="number" formControlName="longitude" step="0.000001">
-              <mat-error>Wartość -180 do 180</mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="map-preview">
-            <app-map-viewer [markers]="mapMarkers()" />
-          </div>
-
-          @if (canEdit()) {
-            <div class="form-actions">
-              <button mat-button type="button" (click)="goBack()">Anuluj</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="saving()">
-                {{ isEditMode() ? 'Zapisz zmiany' : 'Utwórz' }}
-              </button>
-            </div>
-          }
-        </form>
-      }
-    </mat-card>
-  `,
-  styles: [`
-    @use 'styles/variables' as v;
-    .page-header { margin-bottom: 20px; h2 { font-size: 22px; font-weight: 700; color: v.$primary-navy; } }
-    .loading { display: flex; justify-content: center; padding: 40px; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; padding: 16px 0; }
-    .full-span { grid-column: 1 / -1; }
-    .map-preview { height: 300px; margin: 16px 0; border-radius: 6px; overflow: hidden; }
-    .form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid v.$border-color; }
-    button[mat-raised-button] { background-color: v.$primary-navy !important; }
-  `]
+  templateUrl: './landing-site-form.component.html',
+  styleUrl: './landing-site-form.component.scss'
 })
 export class LandingSiteFormComponent implements OnInit {
   private fb = inject(FormBuilder);

@@ -17,70 +17,8 @@ import { ROLES } from '../../../../core/constants';
   selector: 'app-helicopter-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatSortModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, StatusBadgeComponent],
-  template: `
-    <div class="page-header">
-      <h2>Helikoptery</h2>
-      @if (isAdmin()) {
-        <button mat-raised-button color="primary" (click)="router.navigate(['/admin/helicopters/new'])">
-          <mat-icon>add</mat-icon> Dodaj helikopter
-        </button>
-      }
-    </div>
-
-    <mat-card>
-      @if (loading()) {
-        <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
-      } @else {
-        <table mat-table [dataSource]="helicopters()" matSort (matSortChange)="onSort($event)" class="full-width">
-          <ng-container matColumnDef="registrationNumber">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer rejestracyjny</th>
-            <td mat-cell *matCellDef="let row">{{ row.registrationNumber }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="helicopterType">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Typ helikoptera</th>
-            <td mat-cell *matCellDef="let row">{{ row.helicopterType }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-            <td mat-cell *matCellDef="let row">
-              <app-status-badge [status]="row.status === 'active' ? 'Aktywny' : 'Nieaktywny'" />
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-              class="clickable-row" (click)="onRowClick(row)"></tr>
-        </table>
-
-        @if (helicopters().length === 0) {
-          <div class="empty-state">Brak helikopterów</div>
-        }
-      }
-    </mat-card>
-  `,
-  styles: [`
-    @use 'styles/variables' as v;
-
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-
-      h2 { font-size: 22px; font-weight: 700; color: v.$primary-navy; }
-    }
-
-    .full-width { width: 100%; }
-    .loading { display: flex; justify-content: center; padding: 40px; }
-    .empty-state { text-align: center; padding: 40px; color: v.$text-muted; }
-    .clickable-row { cursor: pointer; &:hover { background: #f5f7fa; } }
-
-    button[mat-raised-button] {
-      background-color: v.$primary-navy !important;
-    }
-  `]
+  templateUrl: './helicopter-list.component.html',
+  styleUrl: './helicopter-list.component.scss'
 })
 export class HelicopterListComponent implements OnInit {
   private helicopterService = inject(HelicopterService);

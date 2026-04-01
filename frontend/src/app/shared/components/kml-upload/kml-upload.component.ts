@@ -8,40 +8,8 @@ import { MapPoint } from '../map-viewer/map-viewer.component';
   selector: 'app-kml-upload',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule],
-  template: `
-    <div class="kml-upload">
-      <input type="file" accept=".kml" #fileInput (change)="onFileSelected($event)" hidden>
-      <button mat-stroked-button (click)="fileInput.click()">
-        <mat-icon>upload_file</mat-icon>
-        {{ fileName() || 'Wybierz plik KML' }}
-      </button>
-      @if (pointCount() > 0) {
-        <span class="point-info">{{ pointCount() }} punktów</span>
-      }
-      @if (error()) {
-        <span class="error-info">{{ error() }}</span>
-      }
-    </div>
-  `,
-  styles: [`
-    .kml-upload {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .point-info {
-      font-size: 12px;
-      color: #4c8832;
-      font-weight: 600;
-    }
-
-    .error-info {
-      font-size: 12px;
-      color: #e42518;
-    }
-  `]
+  templateUrl: './kml-upload.component.html',
+  styleUrl: './kml-upload.component.scss'
 })
 export class KmlUploadComponent {
   fileSelected = output<File>();

@@ -1,0 +1,6 @@
+@use 'styles/variables' as v;
+.page-header { margin-bottom: 20px; h2 { font-size: 22px; font-weight: 700; color: v.$primary-navy; } }
+.loading { display: flex; justify-content: center; padding: 40px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; padding: 16px 0; }
+.form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid v.$border-color; }
+button[mat-raised-button] { background-color: v.$primary-navy !important; }

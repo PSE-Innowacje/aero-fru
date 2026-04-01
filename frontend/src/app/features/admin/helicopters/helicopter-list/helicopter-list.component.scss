@@ -1,0 +1,19 @@
+@use 'styles/variables' as v;
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 { font-size: 22px; font-weight: 700; color: v.$primary-navy; }
+}
+
+.full-width { width: 100%; }
+.loading { display: flex; justify-content: center; padding: 40px; }
+.empty-state { text-align: center; padding: 40px; color: v.$text-muted; }
+.clickable-row { cursor: pointer; &:hover { background: #f5f7fa; } }
+
+button[mat-raised-button] {
+  background-color: v.$primary-navy !important;
+}

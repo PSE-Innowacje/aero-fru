@@ -1,0 +1,65 @@
+<nav class="sidebar" [class.collapsed]="collapsed()">
+  <div class="sidebar-header">
+    <mat-icon class="logo-icon">flight</mat-icon>
+    @if (!collapsed()) {
+      <div class="app-brand">
+        <span class="app-title">AERO FRU</span>
+        <span class="app-subtitle">Operacje lotnicze</span>
+      </div>
+    }
+  </div>
+
+  <div class="nav-sections">
+    @if (canSeeAdmin()) {
+      <div class="nav-section">
+        @if (!collapsed()) {
+          <div class="section-label">Administracja</div>
+        }
+        <a routerLink="/admin/helicopters" routerLinkActive="active" class="nav-item">
+          <mat-icon>flight</mat-icon>
+          @if (!collapsed()) { <span>Helikoptery</span> }
+        </a>
+        <a routerLink="/admin/crew-members" routerLinkActive="active" class="nav-item">
+          <mat-icon>people</mat-icon>
+          @if (!collapsed()) { <span>Członkowie załogi</span> }
+        </a>
+        <a routerLink="/admin/landing-sites" routerLinkActive="active" class="nav-item">
+          <mat-icon>flight_land</mat-icon>
+          @if (!collapsed()) { <span>Lądowiska planowe</span> }
+        </a>
+        <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+          <mat-icon>admin_panel_settings</mat-icon>
+          @if (!collapsed()) { <span>Użytkownicy</span> }
+        </a>
+      </div>
+    }
+
+    <div class="nav-section">
+      @if (!collapsed()) {
+        <div class="section-label">Planowanie operacji</div>
+      }
+      <a routerLink="/operations" routerLinkActive="active" class="nav-item">
+        <mat-icon>assignment</mat-icon>
+        @if (!collapsed()) { <span>Lista operacji</span> }
+      </a>
+    </div>
+
+    @if (canSeeFlightOrders()) {
+      <div class="nav-section">
+        @if (!collapsed()) {
+          <div class="section-label">Zlecenia na lot</div>
+        }
+        <a routerLink="/flight-orders" routerLinkActive="active" class="nav-item">
+          <mat-icon>description</mat-icon>
+          @if (!collapsed()) { <span>Lista zleceń</span> }
+        </a>
+      </div>
+    }
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="toggle-btn" (click)="toggle.emit()">
+      <mat-icon>{{ collapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+</nav>

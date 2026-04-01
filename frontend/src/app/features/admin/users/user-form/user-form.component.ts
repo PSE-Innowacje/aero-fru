@@ -20,74 +20,8 @@ import { ROLES } from '../../../../core/constants';
   selector: 'app-user-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
-  template: `
-    <div class="page-header">
-      <h2>{{ isEditMode() ? 'Edycja użytkownika' : 'Nowy użytkownik' }}</h2>
-    </div>
-
-    <mat-card>
-      @if (loading()) {
-        <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
-      } @else {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div class="form-grid">
-            <mat-form-field appearance="outline">
-              <mat-label>Imię</mat-label>
-              <input matInput formControlName="firstName" maxlength="100">
-              <mat-error>Imię jest wymagane</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Nazwisko</mat-label>
-              <input matInput formControlName="lastName" maxlength="100">
-              <mat-error>Nazwisko jest wymagane</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email" type="email" maxlength="100">
-              <mat-error>Prawidłowy email jest wymagany</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Hasło {{ isEditMode() ? '(opcjonalne)' : '' }}</mat-label>
-              <input matInput formControlName="password" type="password">
-              @if (!isEditMode()) {
-                <mat-error>Hasło jest wymagane</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Rola</mat-label>
-              <mat-select formControlName="roleId">
-                @for (role of userRoles(); track role.id) {
-                  <mat-option [value]="role.id">{{ role.name }}</mat-option>
-                }
-              </mat-select>
-              <mat-error>Rola jest wymagana</mat-error>
-            </mat-form-field>
-          </div>
-
-          @if (canEdit()) {
-            <div class="form-actions">
-              <button mat-button type="button" (click)="goBack()">Anuluj</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="saving()">
-                {{ isEditMode() ? 'Zapisz zmiany' : 'Utwórz' }}
-              </button>
-            </div>
-          }
-        </form>
-      }
-    </mat-card>
-  `,
-  styles: [`
-    @use 'styles/variables' as v;
-    .page-header { margin-bottom: 20px; h2 { font-size: 22px; font-weight: 700; color: v.$primary-navy; } }
-    .loading { display: flex; justify-content: center; padding: 40px; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; padding: 16px 0; }
-    .form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid v.$border-color; }
-    button[mat-raised-button] { background-color: v.$primary-navy !important; }
-  `]
+  templateUrl: './user-form.component.html',
+  styleUrl: './user-form.component.scss'
 })
 export class UserFormComponent implements OnInit {
   private fb = inject(FormBuilder);

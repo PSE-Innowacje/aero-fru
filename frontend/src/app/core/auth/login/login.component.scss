@@ -1,0 +1,79 @@
+@use 'styles/variables' as v;
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: v.$sidebar-gradient;
+}
+
+.login-card-wrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+}
+
+.login-logo {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 32px;
+
+  .logo-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 14px;
+    opacity: 0.8;
+    font-weight: 300;
+  }
+}
+
+mat-card {
+  padding: 32px 24px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  margin-bottom: 8px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: v.$alert-red;
+  font-size: 13px;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: rgba(228, 37, 24, 0.08);
+  border-radius: v.$border-radius-sm;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.login-btn {
+  margin-top: 8px;
+  height: 44px;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: v.$primary-navy !important;
+}

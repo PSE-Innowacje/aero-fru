@@ -26,16 +26,8 @@ export interface MapMarker {
 @Component({
   selector: 'app-map-viewer',
   standalone: true,
-  template: `<div #mapContainer class="map-container"></div>`,
-  styles: [`
-    .map-container {
-      width: 100%;
-      height: 100%;
-      min-height: 300px;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-  `]
+  templateUrl: './map-viewer.component.html',
+  styleUrl: './map-viewer.component.scss'
 })
 export class MapViewerComponent implements OnDestroy {
   points = input<MapPoint[]>([]);
