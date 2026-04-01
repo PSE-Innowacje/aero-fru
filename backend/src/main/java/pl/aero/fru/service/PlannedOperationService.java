@@ -50,6 +50,7 @@ public class PlannedOperationService {
         return operationRepository.findAll(spec, pageable).map(this::toListResponse);
     }
 
+    @Transactional(readOnly = true)
     public OperationResponse findById(Long id) {
         PlannedOperation op = getOperation(id);
         return toResponse(op);
