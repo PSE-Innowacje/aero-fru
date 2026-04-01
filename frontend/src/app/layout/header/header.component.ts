@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,5 +15,4 @@ import { AuthService } from '../../core/auth/auth.service';
 })
 export class HeaderComponent {
   authService = inject(AuthService);
-  toggleSidebar = output<void>();
 }
