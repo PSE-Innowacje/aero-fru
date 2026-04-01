@@ -1,7 +1,7 @@
 <div class="app-layout">
   <app-sidebar [collapsed]="sidebarCollapsed()" (toggle)="sidebarCollapsed.set(!sidebarCollapsed())" />
   <div class="main-area" [class.sidebar-collapsed]="sidebarCollapsed()">
-    <app-header (toggleSidebar)="sidebarCollapsed.set(!sidebarCollapsed())" />
+    <app-header />
     <main class="content-area">
       <router-outlet />
     </main>
