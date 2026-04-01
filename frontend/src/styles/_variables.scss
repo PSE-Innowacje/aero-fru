@@ -12,8 +12,8 @@ $text-dark: #2c3e50;
 $text-muted: #6c757d;
 $border-color: #e0e4e8;
 
-// Sidebar gradient (inspired by raporty.pse.pl)
-$sidebar-gradient: linear-gradient(180deg, $primary-navy 0%, $primary-navy-light 40%, $accent-teal 100%);
+// Sidebar gradient (matching raporty.pse.pl)
+$sidebar-gradient: linear-gradient(180deg, #0a1628 0%, #111e3c 25%, #1a2a5a 50%, #232e6b 75%, #2a3278 100%);
 
 // Layout dimensions
 $sidebar-width: 260px;
