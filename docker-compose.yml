@@ -11,8 +11,8 @@ services:
       - "1522:1521"
     volumes:
       - aero_oracle_data:/opt/oracle/oradata
-    mem_limit: 2g
-    memswap_limit: 2g
+    mem_limit: 3g
+    memswap_limit: 3g
     healthcheck:
       test: ["CMD-SHELL", "healthcheck.sh"]
       interval: 20s
