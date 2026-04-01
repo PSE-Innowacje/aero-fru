@@ -6,23 +6,23 @@
 
 --------------------------------------------------------
 -- Test Users (one per role)
--- BCrypt hash of 'Test1234': $2b$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa
+-- BCrypt hash of 'Test1234': $2a$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa
 --------------------------------------------------------
 INSERT INTO FRU_USERS (id, first_name, last_name, email, password_hash, role_id)
 VALUES (901, 'Admin', 'Testowy', 'admin@test.pl',
-        '$2b$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 1);
+        '$2a$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 1);
 
 INSERT INTO FRU_USERS (id, first_name, last_name, email, password_hash, role_id)
 VALUES (902, 'Planer', 'Testowy', 'planer@test.pl',
-        '$2b$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 2);
+        '$2a$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 2);
 
 INSERT INTO FRU_USERS (id, first_name, last_name, email, password_hash, role_id)
 VALUES (903, 'Nadzorca', 'Testowy', 'nadzorca@test.pl',
-        '$2b$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 3);
+        '$2a$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 3);
 
 INSERT INTO FRU_USERS (id, first_name, last_name, email, password_hash, role_id)
 VALUES (904, 'Pilot', 'Testowy', 'pilot@test.pl',
-        '$2b$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 4);
+        '$2a$10$up3/tYxTF0KZAbRt.q51A.p7YoILpauboQ0RrdzAPQsZBc/iploXa', 4);
 
 --------------------------------------------------------
 -- Test Helicopters

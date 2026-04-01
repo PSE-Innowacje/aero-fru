@@ -86,3 +86,11 @@ Update Landing Site As Admin
     ...    latitude=${52.2297700}
     ...    longitude=${21.0117800}
     PUT On Session    admin    /api/landing-sites/${TEST_LANDING_SITE_1_ID}    json=${restore}    expected_status=200
+
+Update Landing Site As Pilot Returns 401
+    [Documentation]    PUT /api/landing-sites - pilot cannot update (returns 401)
+    ${body}=    Create Dictionary
+    ...    name=Hacked Site
+    ...    latitude=${52.0}
+    ...    longitude=${21.0}
+    ${resp}=    PUT On Session    pilot    /api/landing-sites/${TEST_LANDING_SITE_1_ID}    json=${body}    expected_status=401

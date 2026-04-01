@@ -101,3 +101,14 @@ Update Crew Member As Admin
     ...    roleId=${CREW_ROLE_OBSERVER}
     ...    trainingValidUntil=2027-06-30
     PUT On Session    admin    /api/crew-members/${TEST_CREW_OBSERVER_ID}    json=${restore}    expected_status=200
+
+Update Crew Member As Pilot Returns 401
+    [Documentation]    PUT /api/crew-members - pilot cannot update (returns 401)
+    ${body}=    Create Dictionary
+    ...    firstName=Anna
+    ...    lastName=Hacked
+    ...    email=anna.obs@test.pl
+    ...    weightKg=${65}
+    ...    roleId=${CREW_ROLE_OBSERVER}
+    ...    trainingValidUntil=2027-06-30
+    ${resp}=    PUT On Session    pilot    /api/crew-members/${TEST_CREW_OBSERVER_ID}    json=${body}    expected_status=401
