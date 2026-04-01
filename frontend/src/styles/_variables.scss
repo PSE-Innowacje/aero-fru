@@ -1,0 +1,32 @@
+// PSE-inspired color palette
+$primary-navy: #003064;
+$primary-navy-light: #0a4a8a;
+$accent-teal: #1a6b5a;
+$accent-green: #4c8832;
+$accent-blue: #48a2ce;
+$alert-red: #e42518;
+$alert-yellow: #f2c432;
+$bg-light: #f5f7fa;
+$bg-white: #ffffff;
+$text-dark: #2c3e50;
+$text-muted: #6c757d;
+$border-color: #e0e4e8;
+
+// Sidebar gradient (inspired by raporty.pse.pl)
+$sidebar-gradient: linear-gradient(180deg, $primary-navy 0%, $primary-navy-light 40%, $accent-teal 100%);
+
+// Layout dimensions
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 64px;
+$header-height: 56px;
+
+// Typography
+$font-family: 'Lato', sans-serif;
+
+// Shadows
+$card-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+$sidebar-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+
+// Border radius
+$border-radius: 6px;
+$border-radius-sm: 4px;

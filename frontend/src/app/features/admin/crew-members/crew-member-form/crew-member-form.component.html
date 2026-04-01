@@ -1,0 +1,80 @@
+<div class="page-header">
+  <h2>{{ isEditMode() ? 'Edycja członka załogi' : 'Nowy członek załogi' }}</h2>
+</div>
+
+<mat-card>
+  @if (loading()) {
+    <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Imię</mat-label>
+          <input matInput formControlName="firstName" maxlength="100">
+          <mat-error>Imię jest wymagane</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nazwisko</mat-label>
+          <input matInput formControlName="lastName" maxlength="100">
+          <mat-error>Nazwisko jest wymagane</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" maxlength="100">
+          <mat-error>Prawidłowy email jest wymagany</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Waga (kg)</mat-label>
+          <input matInput type="number" formControlName="weightKg" min="30" max="200">
+          <mat-error>Waga 30–200 kg</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Rola</mat-label>
+          <mat-select formControlName="roleId">
+            @for (role of crewRoles(); track role.id) {
+              <mat-option [value]="role.id">{{ role.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Rola jest wymagana</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data ważności szkolenia</mat-label>
+          <input matInput [matDatepicker]="trainingPicker" formControlName="trainingValidUntil">
+          <mat-datepicker-toggle matIconSuffix [for]="trainingPicker"></mat-datepicker-toggle>
+          <mat-datepicker #trainingPicker></mat-datepicker>
+          <mat-error>Data szkolenia jest wymagana</mat-error>
+        </mat-form-field>
+
+        @if (isPilotRole()) {
+          <mat-form-field appearance="outline">
+            <mat-label>Nr licencji pilota</mat-label>
+            <input matInput formControlName="pilotLicenseNumber" maxlength="30">
+            <mat-error>Nr licencji jest wymagany dla pilota</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Data ważności licencji</mat-label>
+            <input matInput [matDatepicker]="licensePicker" formControlName="licenseValidUntil">
+            <mat-datepicker-toggle matIconSuffix [for]="licensePicker"></mat-datepicker-toggle>
+            <mat-datepicker #licensePicker></mat-datepicker>
+            <mat-error>Data licencji jest wymagana dla pilota</mat-error>
+          </mat-form-field>
+        }
+      </div>
+
+      @if (canEdit()) {
+        <div class="form-actions">
+          <button mat-button type="button" (click)="goBack()">Anuluj</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="saving()">
+            {{ isEditMode() ? 'Zapisz zmiany' : 'Utwórz' }}
+          </button>
+        </div>
+      }
+    </form>
+  }
+</mat-card>

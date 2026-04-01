@@ -1,0 +1,13 @@
+<div class="kml-upload">
+  <input type="file" accept=".kml" #fileInput (change)="onFileSelected($event)" hidden>
+  <button mat-stroked-button (click)="fileInput.click()">
+    <mat-icon>upload_file</mat-icon>
+    {{ fileName() || 'Wybierz plik KML' }}
+  </button>
+  @if (pointCount() > 0) {
+    <span class="point-info">{{ pointCount() }} punktów</span>
+  }
+  @if (error()) {
+    <span class="error-info">{{ error() }}</span>
+  }
+</div>

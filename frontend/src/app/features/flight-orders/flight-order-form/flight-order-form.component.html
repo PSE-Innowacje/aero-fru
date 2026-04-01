@@ -1,0 +1,158 @@
+<div class="page-header">
+  <h2>{{ isEditMode() ? 'Edycja zlecenia na lot' : 'Nowe zlecenie na lot' }}</h2>
+</div>
+
+<mat-card>
+  @if (loading()) {
+    <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Data planowanego startu</mat-label>
+          <input matInput [matDatepicker]="startDate" formControlName="plannedStartDate">
+          <mat-datepicker-toggle matIconSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+          <mat-error>Data startu jest wymagana</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Godzina startu</mat-label>
+          <input matInput type="time" formControlName="plannedStartTime">
+          <mat-error>Godzina startu jest wymagana</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data planowanego lądowania</mat-label>
+          <input matInput [matDatepicker]="landDate" formControlName="plannedLandingDate">
+          <mat-datepicker-toggle matIconSuffix [for]="landDate"></mat-datepicker-toggle>
+          <mat-datepicker #landDate></mat-datepicker>
+          <mat-error>Data lądowania jest wymagana</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Godzina lądowania</mat-label>
+          <input matInput type="time" formControlName="plannedLandingTime">
+          <mat-error>Godzina lądowania jest wymagana</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pilot</mat-label>
+          <mat-select formControlName="pilotId">
+            @for (p of pilots(); track p.id) {
+              <mat-option [value]="p.id">{{ p.email }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Pilot jest wymagany</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Helikopter</mat-label>
+          <mat-select formControlName="helicopterId">
+            @for (h of activeHelicopters(); track h.id) {
+              <mat-option [value]="h.id">{{ h.registrationNumber }} ({{ h.helicopterType }})</mat-option>
+            }
+          </mat-select>
+          <mat-error>Helikopter jest wymagany</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-span">
+          <mat-label>Członkowie załogi</mat-label>
+          <mat-select formControlName="crewMemberIds" multiple>
+            @for (c of allCrew(); track c.id) {
+              <mat-option [value]="c.id">{{ c.email }} ({{ c.role }})</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <div class="info-row">
+          <span class="label">Waga załogi:</span>
+          <span class="value">{{ crewWeight() }} kg</span>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Lądowisko startowe</mat-label>
+          <mat-select formControlName="startLandingSiteId">
+            @for (s of landingSites(); track s.id) {
+              <mat-option [value]="s.id">{{ s.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Lądowisko startowe jest wymagane</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Lądowisko końcowe</mat-label>
+          <mat-select formControlName="endLandingSiteId">
+            @for (s of landingSites(); track s.id) {
+              <mat-option [value]="s.id">{{ s.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Lądowisko końcowe jest wymagane</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-span">
+          <mat-label>Planowane operacje (status: Potwierdzone do planu)</mat-label>
+          <mat-select formControlName="operationIds" multiple>
+            @for (op of availableOperations(); track op.id) {
+              <mat-option [value]="op.id">#{{ op.operationNumber }} — {{ op.orderProjectNumber }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Wybierz co najmniej jedną operację</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Szacowana długość trasy (km)</mat-label>
+          <input matInput type="number" formControlName="estimatedRouteKm">
+          <mat-error>Szacowana długość trasy jest wymagana</mat-error>
+        </mat-form-field>
+
+        @if (isEditMode()) {
+          <mat-form-field appearance="outline">
+            <mat-label>Rzeczywista data startu</mat-label>
+            <input matInput [matDatepicker]="actualStartDate" formControlName="actualStartDate">
+            <mat-datepicker-toggle matIconSuffix [for]="actualStartDate"></mat-datepicker-toggle>
+            <mat-datepicker #actualStartDate></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Godzina rzeczywistego startu</mat-label>
+            <input matInput type="time" formControlName="actualStartTime">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Rzeczywista data lądowania</mat-label>
+            <input matInput [matDatepicker]="actualLandDate" formControlName="actualLandingDate">
+            <mat-datepicker-toggle matIconSuffix [for]="actualLandDate"></mat-datepicker-toggle>
+            <mat-datepicker #actualLandDate></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Godzina rzeczywistego lądowania</mat-label>
+            <input matInput type="time" formControlName="actualLandingTime">
+          </mat-form-field>
+        }
+      </div>
+
+      <!-- Validation warnings -->
+      @for (warning of warnings(); track warning) {
+        <div class="warning-message">
+          <mat-icon>warning</mat-icon> {{ warning }}
+        </div>
+      }
+
+      <div class="map-section">
+        <h3>Mapa trasy</h3>
+        <div class="map-container">
+          <app-map-viewer [points]="mapPoints()" [markers]="mapMarkers()" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button mat-button type="button" (click)="goBack()">Anuluj</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="saving()">
+          {{ isEditMode() ? 'Zapisz zmiany' : 'Utwórz zlecenie' }}
+        </button>
+      </div>
+    </form>
+  }
+</mat-card>

@@ -1,0 +1,44 @@
+<div class="page-header">
+  <h2>{{ isEditMode() ? 'Edycja lądowiska' : 'Nowe lądowisko' }}</h2>
+</div>
+
+<mat-card>
+  @if (loading()) {
+    <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="full-span">
+          <mat-label>Nazwa</mat-label>
+          <input matInput formControlName="name">
+          <mat-error>Nazwa jest wymagana</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Szerokość geograficzna</mat-label>
+          <input matInput type="number" formControlName="latitude" step="0.000001">
+          <mat-error>Wartość -90 do 90</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Długość geograficzna</mat-label>
+          <input matInput type="number" formControlName="longitude" step="0.000001">
+          <mat-error>Wartość -180 do 180</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="map-preview">
+        <app-map-viewer [markers]="mapMarkers()" />
+      </div>
+
+      @if (canEdit()) {
+        <div class="form-actions">
+          <button mat-button type="button" (click)="goBack()">Anuluj</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="saving()">
+            {{ isEditMode() ? 'Zapisz zmiany' : 'Utwórz' }}
+          </button>
+        </div>
+      }
+    </form>
+  }
+</mat-card>

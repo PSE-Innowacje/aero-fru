@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h2>Użytkownicy</h2>
+  @if (isAdmin()) {
+    <button mat-raised-button color="primary" (click)="router.navigate(['/admin/users/new'])">
+      <mat-icon>add</mat-icon> Dodaj użytkownika
+    </button>
+  }
+</div>
+
+<mat-card>
+  @if (loading()) {
+    <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else {
+    <table mat-table [dataSource]="users()" matSort (matSortChange)="onSort($event)" class="full-width">
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Rola</th>
+        <td mat-cell *matCellDef="let row">{{ row.role }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          class="clickable-row" (click)="onRowClick(row)"></tr>
+    </table>
+
+    @if (users().length === 0) {
+      <div class="empty-state">Brak użytkowników</div>
+    }
+  }
+</mat-card>

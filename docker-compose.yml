@@ -1,0 +1,50 @@
+services:
+
+  oracle:
+    image: gvenzl/oracle-free:23-slim-faststart
+    container_name: aero-fru-oracle
+    environment:
+      ORACLE_PASSWORD: oracle_root
+      APP_USER: aero_fru
+      APP_USER_PASSWORD: aero_fru
+    ports:
+      - "1522:1521"
+    volumes:
+      - aero_oracle_data:/opt/oracle/oradata
+    mem_limit: 3g
+    memswap_limit: 3g
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aero-fru-backend
+    environment:
+      DB_HOST: oracle
+      DB_PORT: 1521
+      DB_SERVICE: FREEPDB1
+      DB_USERNAME: aero_fru
+      DB_PASSWORD: aero_fru
+      JWT_SECRET: aero-fru-dev-secret-key-that-should-be-changed-in-production-256bits
+      SERVER_PORT: 8080
+      CORS_ORIGINS: http://localhost:4200
+    ports:
+      - "8080:8080"
+    depends_on:
+      oracle:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8080/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+volumes:
+  aero_oracle_data:

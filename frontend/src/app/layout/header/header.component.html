@@ -1,0 +1,21 @@
+<mat-toolbar class="header">
+  <button mat-icon-button (click)="toggleSidebar.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="spacer"></span>
+
+  @if (authService.currentUser(); as user) {
+    <div class="user-info">
+      <mat-icon class="user-avatar">account_circle</mat-icon>
+      <div class="user-details">
+        <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+        <span class="user-role">{{ user.role }}</span>
+      </div>
+    </div>
+
+    <button mat-icon-button (click)="authService.logout()" matTooltip="Wyloguj">
+      <mat-icon>logout</mat-icon>
+    </button>
+  }
+</mat-toolbar>

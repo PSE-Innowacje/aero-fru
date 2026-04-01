@@ -1,0 +1,76 @@
+<div class="page-header">
+  <h2>{{ isEditMode() ? 'Edycja helikoptera' : 'Nowy helikopter' }}</h2>
+</div>
+
+<mat-card>
+  @if (loading()) {
+    <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Numer rejestracyjny</mat-label>
+          <input matInput formControlName="registrationNumber" maxlength="30">
+          <mat-error>Numer rejestracyjny jest wymagany</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Typ helikoptera</mat-label>
+          <input matInput formControlName="helicopterType" maxlength="100">
+          <mat-error>Typ helikoptera jest wymagany</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-span">
+          <mat-label>Opis</mat-label>
+          <input matInput formControlName="description" maxlength="100">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Maks. liczba członków załogi</mat-label>
+          <input matInput type="number" formControlName="maxCrewMembers" min="1" max="10">
+          <mat-error>Wartość 1–10</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Maks. udźwig załogi (kg)</mat-label>
+          <input matInput type="number" formControlName="maxCrewWeightKg" min="1" max="1000">
+          <mat-error>Wartość 1–1000</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="active">Aktywny</mat-option>
+            <mat-option value="inactive">Nieaktywny</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data ważności przeglądu</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="inspectionValidUntil">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (form.get('status')?.value === 'active') {
+            <mat-error>Data przeglądu jest wymagana dla statusu aktywny</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Zasięg bez lądowania (km)</mat-label>
+          <input matInput type="number" formControlName="rangeKm" min="1" max="1000">
+          <mat-error>Wartość 1–1000</mat-error>
+        </mat-form-field>
+      </div>
+
+      @if (canEdit()) {
+        <div class="form-actions">
+          <button mat-button type="button" (click)="goBack()">Anuluj</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="saving()">
+            @if (saving()) { <mat-spinner diameter="20"></mat-spinner> }
+            @else { {{ isEditMode() ? 'Zapisz zmiany' : 'Utwórz' }} }
+          </button>
+        </div>
+      }
+    </form>
+  }
+</mat-card>

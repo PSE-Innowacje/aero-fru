@@ -1,0 +1,121 @@
+@if (loading()) {
+  <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+} @else if (operation()) {
+  <div class="page-header">
+    <div>
+      <h2>Operacja #{{ operation()!.operationNumber }}</h2>
+      <p class="subtitle">{{ operation()!.orderProjectNumber }} — {{ operation()!.shortDescription }}</p>
+    </div>
+    <div class="header-actions">
+      <app-status-badge [status]="operation()!.status" />
+      @if (canEdit()) {
+        <button mat-stroked-button (click)="router.navigate(['/operations', operation()!.id, 'edit'])">
+          <mat-icon>edit</mat-icon> Edytuj
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Status action buttons -->
+  @if (showSupervisorActions()) {
+    <div class="action-bar">
+      <button mat-raised-button class="btn-reject" (click)="changeStatus(OPERATION_STATUSES.REJECTED, 'Odrzucić operację?')">
+        <mat-icon>close</mat-icon> Odrzuć
+      </button>
+      <button mat-raised-button class="btn-confirm" (click)="changeStatus(OPERATION_STATUSES.CONFIRMED, 'Potwierdzić do planu?')">
+        <mat-icon>check</mat-icon> Potwierdź do planu
+      </button>
+    </div>
+  }
+  @if (showPlannerResignAction()) {
+    <div class="action-bar">
+      <button mat-raised-button class="btn-resign" (click)="changeStatus(OPERATION_STATUSES.RESIGNED, 'Zrezygnować z operacji?')">
+        <mat-icon>block</mat-icon> Rezygnuj
+      </button>
+    </div>
+  }
+
+  <div class="detail-grid">
+    <mat-card class="detail-card">
+      <h3>Szczegóły</h3>
+      <div class="detail-row"><span class="label">Rodzaj czynności:</span><span>{{ (operation()!.activityTypes || []).map(a => a.name).join(', ') }}</span></div>
+      <div class="detail-row"><span class="label">Proponowane daty:</span><span>{{ operation()!.proposedDateEarliest | datePl }} – {{ operation()!.proposedDateLatest | datePl }}</span></div>
+      <div class="detail-row"><span class="label">Planowane daty:</span><span>{{ operation()!.plannedDateEarliest | datePl }} – {{ operation()!.plannedDateLatest | datePl }}</span></div>
+      <div class="detail-row"><span class="label">Km trasy:</span><span>{{ operation()!.routeKm }} km</span></div>
+      <div class="detail-row"><span class="label">Osoba wprowadzająca:</span><span>{{ operation()!.createdBy }}</span></div>
+      @if (operation()!.additionalInfo) {
+        <div class="detail-row"><span class="label">Dodatkowe informacje:</span><span>{{ operation()!.additionalInfo }}</span></div>
+      }
+      @if (operation()!.contactPersons?.length) {
+        <div class="detail-row"><span class="label">Osoby kontaktowe:</span><span>{{ (operation()!.contactPersons || []).map(c => c.email).join(', ') }}</span></div>
+      }
+      @if (operation()!.postRealizationNotes) {
+        <div class="detail-row"><span class="label">Uwagi po realizacji:</span><span>{{ operation()!.postRealizationNotes }}</span></div>
+      }
+      <button mat-stroked-button (click)="downloadKml()" class="kml-btn">
+        <mat-icon>download</mat-icon> Pobierz plik KML
+      </button>
+    </mat-card>
+
+    <mat-card class="map-card">
+      <h3>Mapa</h3>
+      <div class="map-container">
+        <app-map-viewer [points]="kmlPoints()" />
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Comments -->
+  <mat-card class="section-card">
+    <h3>Komentarze</h3>
+    @for (comment of operation()!.comments; track comment.id) {
+      <div class="comment">
+        <div class="comment-header">
+          <strong>{{ comment.createdBy }}</strong>
+          <span class="comment-date">{{ comment.createdAt | datePl:'datetime' }}</span>
+        </div>
+        <p>{{ comment.commentText }}</p>
+      </div>
+    }
+    @if (canComment()) {
+      <div class="add-comment">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nowy komentarz</mat-label>
+          <textarea matInput [formControl]="commentControl" maxlength="500" rows="2"></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addComment()" [disabled]="!commentControl.value?.trim()">
+          Dodaj komentarz
+        </button>
+      </div>
+    }
+  </mat-card>
+
+  <!-- History -->
+  <mat-card class="section-card">
+    <h3>Historia zmian</h3>
+    <table mat-table [dataSource]="history()" class="full-width">
+      <ng-container matColumnDef="fieldName">
+        <th mat-header-cell *matHeaderCellDef>Pole</th>
+        <td mat-cell *matCellDef="let row">{{ row.fieldName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="oldValue">
+        <th mat-header-cell *matHeaderCellDef>Stara wartość</th>
+        <td mat-cell *matCellDef="let row">{{ row.oldValue || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="newValue">
+        <th mat-header-cell *matHeaderCellDef>Nowa wartość</th>
+        <td mat-cell *matCellDef="let row">{{ row.newValue || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="changedBy">
+        <th mat-header-cell *matHeaderCellDef>Zmienione przez</th>
+        <td mat-cell *matCellDef="let row">{{ row.changedBy }}</td>
+      </ng-container>
+      <ng-container matColumnDef="changedAt">
+        <th mat-header-cell *matHeaderCellDef>Data zmiany</th>
+        <td mat-cell *matCellDef="let row">{{ row.changedAt | datePl:'datetime' }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="historyColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: historyColumns;"></tr>
+    </table>
+  </mat-card>
+}
