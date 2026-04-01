@@ -50,6 +50,7 @@ public class FlightOrderService {
         return flightOrderRepository.findAll(spec, pageable).map(this::toListResponse);
     }
 
+    @Transactional(readOnly = true)
     public FlightOrderResponse findById(Long id) {
         return toResponse(getFlightOrder(id));
     }
