@@ -17,7 +17,7 @@ public interface CrewMemberMapper {
     @Mapping(source = "role.name", target = "roleName")
     CrewMemberResponse toResponse(CrewMember entity);
 
-    @Mapping(source = "role.name", target = "roleName")
+    @Mapping(source = "role.name", target = "role")
     CrewMemberListResponse toListResponse(CrewMember entity);
 
     @Mapping(target = "role", ignore = true)
