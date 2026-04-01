@@ -44,6 +44,12 @@ a {
   text-transform: none !important;
 }
 
+// Dropdown panel styles
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel {
+  background: v.$bg-white !important;
+}
+
 // Snackbar styles
 .snackbar-success {
   --mdc-snackbar-container-color: #{v.$accent-green};
