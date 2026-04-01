@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public record CrewMemberListResponse(
         Long id,
         String email,
-        String roleName,
+        String role,
         LocalDate licenseValidUntil,
         LocalDate trainingValidUntil
 ) {
