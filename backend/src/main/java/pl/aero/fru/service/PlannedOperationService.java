@@ -36,6 +36,7 @@ public class PlannedOperationService {
     private final OracleContextService oracleContextService;
     private final OperationStatusTransitionValidator statusTransitionValidator;
 
+    @Transactional(readOnly = true)
     public Page<OperationListResponse> findAll(Long statusId, Pageable pageable) {
         Specification<PlannedOperation> spec = Specification.where(null);
         if (statusId != null) {
