@@ -6,4 +6,4 @@
 .loading { display: flex; justify-content: center; padding: 40px; }
 .empty-state { text-align: center; padding: 40px; color: v.$text-muted; }
 .clickable-row { cursor: pointer; &:hover { background: #f5f7fa; } }
-button[mat-raised-button] { background-color: v.$primary-navy !important; }
+button[mat-raised-button] { background-color: v.$primary-navy !important; color: #fff !important; }
