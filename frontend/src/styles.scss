@@ -44,6 +44,13 @@ a {
   text-transform: none !important;
 }
 
+// Dropdown and calendar panel styles
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel,
+.mat-datepicker-content {
+  background: v.$bg-white !important;
+}
+
 // Snackbar styles
 .snackbar-success {
   --mdc-snackbar-container-color: #{v.$accent-green};
