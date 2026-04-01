@@ -62,15 +62,14 @@ Create Operation As Nadzorca
     Should Be True    ${json}[id] > 0
 
 Create Operation As Pilot Returns 403
-    [Documentation]    POST /api/operations - pilot cannot create operations
+    [Documentation]    POST /api/operations - pilot cannot create operations (returns 403)
     ${token}=    Login And Get Token    ${PILOT_EMAIL}
     ${result}=    Run Process    curl    -s    -o    /dev/null    -w    %\{http_code\}    -X    POST
     ...    ${API_URL}/operations
     ...    -H    Authorization: Bearer ${token}
     ...    -F    request\={"orderProjectNumber":"PIL-NOPE","shortDescription":"Pilot nie moze","activityTypeIds":[1]};type\=application/json
     ...    -F    kmlFile\=@${KML_FILE_PATH};type\=application/xml
-    # May return 401 or 403 depending on security config
-    Should Be True    '${result.stdout}' in ['401', '403']
+    Should Be Equal As Strings    ${result.stdout}    403
 
 # ---- GET by ID ----
 
@@ -96,7 +95,6 @@ Change Operation Status
     ${op_id}=    Set Variable    ${json}[id]
     # Step 1: Set planned dates (required for status 1->3)
     ${token_nadzorca}=    Login And Get Token    ${NADZORCA_EMAIL}
-    ${unique}=    Evaluate    int(__import__('time').time() * 1000) % 100000
     ${update_json}=    Set Variable    {"orderProjectNumber":"${json}[orderProjectNumber]","shortDescription":"${json}[shortDescription]","activityTypeIds":[1],"plannedDateEarliest":"2027-03-01","plannedDateLatest":"2027-06-30"}
     ${result}=    Run Process    curl    -s    -X    PUT
     ...    ${API_URL}/operations/${op_id}
@@ -106,6 +104,24 @@ Change Operation Status
     ${body}=    Create Dictionary    statusId=${3}
     ${headers}=    Create Dictionary    Authorization=Bearer ${token_nadzorca}    Content-Type=application/json
     ${resp}=    PATCH    ${API_URL}/operations/${op_id}/status    json=${body}    headers=${headers}    expected_status=200
+
+Change Operation Status Without Planned Dates Returns 422
+    [Documentation]    PATCH /api/operations/{id}/status - status 1->3 without planned dates returns 422
+    ${json}=    Create Operation Via Curl    ${PLANER_EMAIL}
+    ${op_id}=    Set Variable    ${json}[id]
+    ${token_nadzorca}=    Login And Get Token    ${NADZORCA_EMAIL}
+    ${body}=    Create Dictionary    statusId=${3}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${token_nadzorca}    Content-Type=application/json
+    ${resp}=    PATCH    ${API_URL}/operations/${op_id}/status    json=${body}    headers=${headers}    expected_status=422
+
+Invalid Status Transition Returns 409
+    [Documentation]    PATCH /api/operations/{id}/status - invalid transition 1->6 returns 409
+    ${json}=    Create Operation Via Curl    ${PLANER_EMAIL}
+    ${op_id}=    Set Variable    ${json}[id]
+    ${token_nadzorca}=    Login And Get Token    ${NADZORCA_EMAIL}
+    ${body}=    Create Dictionary    statusId=${6}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${token_nadzorca}    Content-Type=application/json
+    ${resp}=    PATCH    ${API_URL}/operations/${op_id}/status    json=${body}    headers=${headers}    expected_status=409
 
 # ---- POST comment ----
 

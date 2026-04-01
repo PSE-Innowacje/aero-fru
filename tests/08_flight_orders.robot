@@ -104,8 +104,8 @@ Create Flight Order As Pilot
     Dictionary Should Contain Key    ${json}    status
     Should Be Equal As Integers    ${json}[estimatedRouteKm]    250
 
-Create Flight Order As Nadzorca Returns Forbidden
-    [Documentation]    POST /api/flight-orders - nadzorca cannot create flight orders
+Create Flight Order As Nadzorca Returns 403
+    [Documentation]    POST /api/flight-orders - nadzorca cannot create flight orders (returns 403)
     ${op_id}=    Create Confirmed Operation
     ${token}=    Login And Get Token    ${NADZORCA_EMAIL}
     ${json_body}=    Set Variable    {"plannedStartAt":"2027-07-01T08:00:00+02:00","plannedLandingAt":"2027-07-01T12:00:00+02:00","pilotId":${TEST_CREW_PILOT_ID},"helicopterId":${TEST_HELICOPTER_ID},"crewMemberIds":[${TEST_CREW_OBSERVER_ID}],"startLandingSiteId":${TEST_LANDING_SITE_1_ID},"endLandingSiteId":${TEST_LANDING_SITE_2_ID},"operationIds":[${op_id}],"estimatedRouteKm":200}
@@ -114,7 +114,7 @@ Create Flight Order As Nadzorca Returns Forbidden
     ...    -H    Authorization: Bearer ${token}
     ...    -H    Content-Type: application/json
     ...    -d    ${json_body}
-    Should Be True    '${result.stdout}' in ['401', '403']
+    Should Be Equal As Strings    ${result.stdout}    403
 
 Create Flight Order With Missing Fields Returns 400
     [Documentation]    POST /api/flight-orders - missing required fields
@@ -189,6 +189,14 @@ Change Flight Order Status As Nadzorca To Zaakceptowane
     ${headers}=    Create Dictionary    Authorization=Bearer ${token}    Content-Type=application/json
     ${resp}=    PATCH    ${API_URL}/flight-orders/${fo_id}/status    json=${body2}    headers=${headers}    expected_status=200
     Should Be Equal    ${resp.json()}[status][name]    Zaakceptowane
+
+Invalid Flight Order Status Transition Returns 409
+    [Documentation]    PATCH /api/flight-orders/{id}/status - invalid transition 1->4 returns 409
+    ${fo_id}    ${_}=    Create Flight Order Via Curl
+    ${body}=    Create Dictionary    statusId=${4}
+    ${token}=    Login And Get Token    ${PILOT_EMAIL}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${token}    Content-Type=application/json
+    ${resp}=    PATCH    ${API_URL}/flight-orders/${fo_id}/status    json=${body}    headers=${headers}    expected_status=409
 
 # ---- PUT endpoint ----
 

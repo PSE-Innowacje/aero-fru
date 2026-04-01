@@ -13,7 +13,6 @@ Get Crew Roles
     ${resp}=    GET On Session    admin    /api/dictionaries/crew-roles    expected_status=200
     ${length}=    Get Length    ${resp.json()}
     Should Be True    ${length} >= 2
-    # Verify known roles exist
     ${names}=    Evaluate    [item['name'] for item in $resp.json()]
     Should Contain    ${names}    Pilot
     Should Contain    ${names}    Obserwator
